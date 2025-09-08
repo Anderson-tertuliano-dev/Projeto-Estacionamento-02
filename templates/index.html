@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="../static/index.css">
+</head>
+
+<body>
+  <header>
+    <h1> Estaciona<span style="color: var(--primary);">+</span></h1>
+  </header>
+
+  <main class="container">
+    <section class="card panel">
+      <form action="">
+        <h3>Entrada rapida</h3>
+
+        <div class="form_col">
+          <label for="placa">Placa do veículo</label>
+          <input type="text" id="placa" name="placa" placeholder="ABC1D23" maxlength="7">
+        </div>
+        <div class="form_row">
+          <div class="form_col">
+            <label for="tipo">Tipo</label>
+            <select name="veiculos" id="">
+              <option value="carro">Carro</option>
+              <option value="moto">Moto</option>
+              <option value="van">Van</option>
+              <option value="outro">Outro</option>
+            </select>
+          </div>
+        </div>
+        <div class="action">
+          <button class="btn btn_ticket" type="button">Emitir ticket</button>
+          <button class="btn btn_registro" type="submit">Registrar entrada</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="status">
+
+      <div class="stat">
+        <small>Vagas totais</small>
+        <strong>50</strong>
+      </div>
+      <div class="stat">
+        <small>Ocupadas</small>
+        <strong>25</strong>
+      </div>
+      <div class="stat">
+        <small>Vagas Disponiveis</small>
+        <strong>25</strong>
+      </div>
+      <div class="stat">
+        <small>Faturamento</small>
+        <strong>1.240,00</strong>
+
+    </section>
+
+    <section class="precos"></section>
+    <h2>Tabelas de preços</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Descrição</th>
+          <th>Preço</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Pirmeira hora</td>
+          <td>12,00</td>
+        </tr>
+        <tr>
+          <td>Hora adicional</td>
+          <td>R$ 8,00</td>
+        </tr>
+        <tr>
+          <td>Dirária</td>
+          <td>R$5500</td>
+        </tr>
+        <tr>
+          <td>Pernoite</td>
+          <td>R$30,00</td>
+        </tr>
+        <tr>
+          <td>Motos </td>
+        </tr>
+      </tbody>
+
+    </table>
+  </main>
+
+  <footer>
+    <p>© 2025 Estaciona+ Sistema de gestão de estacionamento</p>
+  </footer>
+</body>
+
+</html>
