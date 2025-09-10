@@ -9,89 +9,125 @@
 </head>
 
 <body>
-  <header>
-    <h1> Estaciona<span style="color: var(--primary);">+</span></h1>
+  <header class="superior">
+    <div class="logo">
+      <div class="logo_p">P</div>
+      <h1> Estaciona<span style="color: var(--primary);">+</span></h1>
+    </div>
+    <div class="spacer"></div>
+    <section class="search">
+      <input type="text" placeholder="Buscar placa…" />
+    </section>
   </header>
 
   <main class="container">
-    <section class="card panel">
-      <form action="">
-        <h3>Entrada rapida</h3>
+    <div class="card">
+      <section class="panel">
+        <form action="">
+          <h3>Entrada rapida</h3>
 
-        <div class="form_col">
-          <label for="placa">Placa do veículo</label>
-          <input type="text" id="placa" name="placa" placeholder="ABC1D23" maxlength="7">
-        </div>
-        <div class="form_row">
           <div class="form_col">
-            <label for="tipo">Tipo</label>
-            <select name="veiculos" id="">
-              <option value="carro">Carro</option>
-              <option value="moto">Moto</option>
-              <option value="van">Van</option>
-              <option value="outro">Outro</option>
-            </select>
+            <label for="placa">Placa do veículo</label>
+            <input type="text" id="placa" name="placa" placeholder="ABC1D23" maxlength="7">
           </div>
+          <div class="form_row">
+            <div class="form_col">
+              <label for="tipo">Tipo</label>
+              <select name="veiculos" id="">
+                <option value="carro">Carro</option>
+                <option value="moto">Moto</option>
+                <option value="van">Van</option>
+                <option value="outro">Outro</option>
+              </select>
+            </div>
+          </div>
+          <div class="action">
+            <button class="btn btn_ticket" type="button">Emitir ticket</button>
+            <button class="btn btn_registro" type="submit">Registrar entrada</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="status">
+
+        <div class="stat">
+          <small>Vagas totais</small>
+          <strong>50</strong>
         </div>
-        <div class="action">
-          <button class="btn btn_ticket" type="button">Emitir ticket</button>
-          <button class="btn btn_registro" type="submit">Registrar entrada</button>
+        <div class="stat">
+          <small>Ocupadas</small>
+          <strong>25</strong>
         </div>
-      </form>
+        <div class="stat">
+          <small>Vagas Disponiveis</small>
+          <strong>25</strong>
+        </div>
+        <div class="stat">
+          <small>Faturamento</small>
+          <strong>1.240,00</strong>
+
+      </section>
+
+      <section class="precos" style="padding: 14px;">
+        <h3 style="margin: 0 0 8px;">Tabelas de preços</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Descrição</th>
+              <th>Preço</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Pirmeira hora</td>
+              <td>12,00</td>
+            </tr>
+            <tr>
+              <td>Hora adicional</td>
+              <td>R$ 8,00</td>
+            </tr>
+            <tr>
+              <td>Dirária</td>
+              <td>R$5500</td>
+            </tr>
+            <tr>
+              <td>Pernoite</td>
+              <td>R$30,00</td>
+            </tr>
+            <tr>
+              <td>Motos (hora)</td>
+              <td>R$5,00</td>
+            </tr>
+          </tbody>
+
+        </table>
+      </section>
+    </div>
+    <section class="historico" style="padding: 14px;">
+      <h3 style="margin: 0 0 8px;">Ultimas movimentações</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Hora</th>
+            <th>Placa</th>
+            <th>Tipo</th>
+            <th>Ação</th>
+            <th>Vaga</th>
+            <th>Valor</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>18:22</td>
+            <td>azs-4874</td>
+            <td>Carro</td>
+            <td>saída</td>
+            <td>21</td>
+            <td>15,20</td>
+          </tr>
+        </tbody>
+      </table>
     </section>
-
-    <section class="status">
-
-      <div class="stat">
-        <small>Vagas totais</small>
-        <strong>50</strong>
-      </div>
-      <div class="stat">
-        <small>Ocupadas</small>
-        <strong>25</strong>
-      </div>
-      <div class="stat">
-        <small>Vagas Disponiveis</small>
-        <strong>25</strong>
-      </div>
-      <div class="stat">
-        <small>Faturamento</small>
-        <strong>1.240,00</strong>
-
-    </section>
-
-    <section class="precos"></section>
-    <h2>Tabelas de preços</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Descrição</th>
-          <th>Preço</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Pirmeira hora</td>
-          <td>12,00</td>
-        </tr>
-        <tr>
-          <td>Hora adicional</td>
-          <td>R$ 8,00</td>
-        </tr>
-        <tr>
-          <td>Dirária</td>
-          <td>R$5500</td>
-        </tr>
-        <tr>
-          <td>Pernoite</td>
-          <td>R$30,00</td>
-        </tr>
-        <tr>
-          <td>Motos </td>
-        </tr>
-      </tbody>
-
-    </table>
   </main>
 
   <footer>
