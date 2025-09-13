@@ -17,23 +17,50 @@
     <div class="spacer"></div>
     <section class="search">
       <input type="text" placeholder="Buscar placa…" />
+      <button id="btnBuscar" class="btn btn_registro">Buscar</button>
     </section>
   </header>
 
   <main class="container">
+    <section class="search_result" id="searchresult">
+      <div class=" search_button">
+        <h3>Resultado da busca🔎</h3>
+        <button id="closeResult">&times;</button>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th class="borda_i">Placa</th>
+            <th>Entrada</th>
+            <th>Permanência</th>
+            <th class="borda_f">Valor</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>ABC1D23</td>
+            <td>15:20</td>
+            <td>2h 30min</td>
+            <td>R$ 28,00</td>
+          </tr>
+        </tbody>
+      </table>
+      <p id="resultadoPlaca">Nenhum veículo encontrado.</p>
+    </section>
+
     <div class="card">
       <section class="panel">
-        <form action="">
+        <form method="POST" action="{{ url_for('registrar_entrada') }}">
           <h3>Entrada rapida</h3>
 
           <div class="form_col">
             <label for="placa">Placa do veículo</label>
-            <input type="text" id="placa" name="placa" placeholder="ABC1D23" maxlength="7">
+            <input type="text" id="placa" name="placa" placeholder="" maxlength="7">
           </div>
           <div class="form_row">
             <div class="form_col">
               <label for="tipo">Tipo</label>
-              <select name="veiculos" id="">
+              <select id="tipo" name="veiculos">
                 <option value="carro">Carro</option>
                 <option value="moto">Moto</option>
                 <option value="van">Van</option>
@@ -79,7 +106,7 @@
           </thead>
           <tbody>
             <tr>
-              <td>Pirmeira hora</td>
+              <td>Primeira hora</td>
               <td>12,00</td>
             </tr>
             <tr>
@@ -87,8 +114,8 @@
               <td>R$ 8,00</td>
             </tr>
             <tr>
-              <td>Dirária</td>
-              <td>R$5500</td>
+              <td>Diária</td>
+              <td>R$55,00</td>
             </tr>
             <tr>
               <td>Pernoite</td>
