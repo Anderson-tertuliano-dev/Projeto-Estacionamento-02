@@ -6,7 +6,7 @@ cursor = conexao.cursor()
 cursor.execute(""" 
 CREATE TABLE IF NOT EXISTS veiculos(
                id INTEGER PRIMARY KEY AUTOINCREMENT,
-               placa TEXT NOT NULL,
+               placa TEXT UNIQUE,
                veiculos TEXT NOT NULL,
                hora_entrada TEXT NOT NULL,
                hora_saida TEXT,

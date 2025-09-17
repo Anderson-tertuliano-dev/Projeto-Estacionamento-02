@@ -16,8 +16,10 @@
     </div>
     <div class="spacer"></div>
     <section class="search">
-      <input type="text" placeholder="Buscar placa…" />
-      <button id="btnBuscar" class="btn btn_registro">Buscar</button>
+      <form method="POST" action="/buscar">
+        <input type="text" name="placa_buscar" placeholder="Buscar placa…" />
+        <button id="btnBuscar" type="submit" class="btn btn_buscar">Buscar</button>
+      </form>
     </section>
   </header>
 
@@ -32,30 +34,42 @@
           <tr>
             <th class="borda_i">Placa</th>
             <th>Entrada</th>
+            <th>Saída</th>
             <th>Permanência</th>
             <th class="borda_f">Valor</th>
           </tr>
         </thead>
         <tbody>
+          {% if resultado %}
           <tr>
-            <td>ABC1D23</td>
-            <td>15:20</td>
-            <td>2h 30min</td>
-            <td>R$ 28,00</td>
+            <td>{{ resultado.placa }}</td>
+            <td>{{ resultado.entrada }}</td>
+            <td>{{ resultado.agora }}</td>
+            <td>{{ resultado.permanencia }}</td>
+            <td>{{ resultado.valor }}</td>
           </tr>
+          {% else %}
+          <tr>
+            <td colspan="4"> Nenhum veículo encontrado.</td>
+          </tr>
+          {% endif %}
         </tbody>
       </table>
-      <p id="resultadoPlaca">Nenhum veículo encontrado.</p>
+      <section>
+        <form action="">
+          <button type="submit" class="bnt_finalizar">Finalizar</button>
+        </form>
+      </section>
+
     </section>
 
     <div class="card">
       <section class="panel">
         <form method="POST" action="{{ url_for('registrar_entrada') }}">
           <h3>Entrada rapida</h3>
-
           <div class="form_col">
             <label for="placa">Placa do veículo</label>
-            <input type="text" id="placa" name="placa" placeholder="" maxlength="7">
+            <input type="text" id="placa" name="placa" placeholder="" maxlength="8">
           </div>
           <div class="form_row">
             <div class="form_col">
@@ -68,10 +82,22 @@
               </select>
             </div>
           </div>
+
+          {% with mensagens = get_flashed_messages(with_categories=true) %}
+          {% if mensagens %}
+          <div class="flash-messeges">
+            {% for category, message in mensagens %}
+            <div class="flash {{ category }}">{{message}}</div>
+            {% endfor %}
+          </div>
+          {% endif %}
+          {% endwith %}
+
           <div class="action">
             <button class="btn btn_ticket" type="button">Emitir ticket</button>
             <button class="btn btn_registro" type="submit">Registrar entrada</button>
           </div>
+
         </form>
       </section>
 
@@ -160,6 +186,27 @@
   <footer>
     <p>© 2025 Estaciona+ Sistema de gestão de estacionamento</p>
   </footer>
+  <script>
+    // Seleciona a mensagem
+    const msgs = document.querySelectorAll('.flash {{ category }}');
+    if (msgs.length > 0) {
+      // Depois de 3 segundos (3000ms), remove a mensagem
+      setTimeout(() => {
+        msgs.forEach(msg => msg.style.display = 'none');
+      }, 3000);
+    }
+  </script>
+  <script>
+    const closeBtn = document.getElementById("closeResult");
+    const searchResult = document.getElementById("searchresult");
+
+    closeBtn.addEventListener("click", () => {
+      searchResult.style.display = 'none';
+    });
+    // function mostrarResultado() {
+    //   searchResult.style.display = "block";
+    // }
+  </script>
 </body>
 
 </html>

@@ -35,9 +35,9 @@ body {
     align-items: center;
     padding: 14px 20px;
     backdrop-filter: saturate(1.2) blur(8px);
-    background: linear-gradient(180deg, rgba(17,24,39,.9),rgba(17,24,39,.6));
-    border-bottom: 1px solid rgba(255,255,255,.06) ;
-   
+    background: linear-gradient(180deg, rgba(17, 24, 39, .9), rgba(17, 24, 39, .6));
+    border-bottom: 1px solid rgba(255, 255, 255, .06);
+
 }
 
 .logo {
@@ -56,27 +56,29 @@ body {
     border-radius: 10px;
     display: grid;
     place-content: center;
-    background: radial-gradient(120% 120% at 20% 20%,  #3b82f6 0%, #22d3ee 50%, #14b8a6 100% );
-    box-shadow: 0 6px 18px #0ea5e980 inset, 0 8px 18px rgba(0,0,0,.35);
+    background: radial-gradient(120% 120% at 20% 20%, #3b82f6 0%, #22d3ee 50%, #14b8a6 100%);
+    box-shadow: 0 6px 18px #0ea5e980 inset, 0 8px 18px rgba(0, 0, 0, .35);
     font-weight: 900;
     color: #06131b;
     font-size: 16px;
 }
 
-.superior, .spacer {
-    flex:1}
+.superior,
+.spacer {
+    flex: 1
+}
 
-.search{
+.search {
     position: relative;
     min-width: 260px;
 }
 
-.search input{
-    
+.search input {
+
     padding: 12px 14px 12px 40px;
     border-radius: 999px;
-    border: 1px solid  rgba(255,255,255,.08);
-    background: rgba(2,6,23,.6);
+    border: 1px solid rgba(255, 255, 255, .08);
+    background: rgba(2, 6, 23, .6);
     color: var(--text);
     outline: none;
 
@@ -95,10 +97,10 @@ body {
 
 }
 
-.search_result{
-    display:none;
+.search_result {
+    
     background: #1f2937;
-    color:#e5e7eb;
+    color: #e5e7eb;
     padding: 12px;
     border-radius: 10px;
     margin: 10px auto;
@@ -107,61 +109,66 @@ body {
     position: relative
 }
 
-.search_button{
+.search_button {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    
-    
+
+
 }
 
-.search_button button{
+.search_button button {
     background: red;
     margin-left: auto;
-    
+
 }
 
-.search_button button:hover{
+.search_button button:hover {
     transform: translateY(-2px);
     background: rgba(255, 0, 0, 0.336);
 }
 
-.search_result table{
+.search_result table {
     width: 100%;
     border-collapse: separate;
     border-spacing: 0 8px;
 }
-.search_result th{
+
+.search_result th {
     background: #04659280;
     text-align: left;
     font-size: .88rem;
     color: var(--sub_text);
     font-weight: 600;
-    border: 1px solid rgba(255, 255, 255, .08);;
+    border: 1px solid rgba(255, 255, 255, .08);
+    ;
 }
 
-.search_result .borda_i{
+.search_result .borda_i {
     border-radius: 10px 0 0 10px;
 }
-.search_result .borda_f{
+
+.search_result .borda_f {
     border-radius: 0 10px 10px 0;
 }
 
-.search_result th, td{
+.search_result th,
+td {
     padding: 10px 12px;
 }
-.search_result h4{
+
+.search_result h4 {
     margin: 0 0 8px;
 
 }
 
-.search_result button{
+.search_result button {
     display: flex;
     align-items: center;
-    
+
 }
 
-.search button:hover{
+.search button:hover {
     background: #8ea0be;
     transform: translateY(-2px);
 }
@@ -191,7 +198,7 @@ body {
     flex-direction: column;
     gap: 8px;
     margin-bottom: 15px;
-   
+
 }
 
 .form_col label {
@@ -209,6 +216,30 @@ button {
     color: var(--text);
 }
 
+.flash {
+    display: inline;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 500;
+    padding: 5px 14px;
+    border-radius: 8px;
+    margin: 10px 0;
+}
+
+.flash.warning {
+    color: yellow;
+    border: 1px solid yellow;
+}
+
+.flash.erro{
+    color: red;
+    border: 1px solid red;
+}
+
+.flash.success{
+    color: rgb(57, 221, 16);
+    border: 1px solid rgb(57, 221, 16);
+}
 
 
 input::placeholder {
@@ -226,14 +257,14 @@ input::placeholder {
     font-weight: 600;
     letter-spacing: .3px;
     gap: 10px;
-    
+
 }
 
 .btn_ticket {
     background: rgba(17, 207, 64, 0.534)
 }
 
-.btn_registro {
+.btn_buscar {
     background: linear-gradient(180deg, #22d3ee, #06b6d4);
     border: 0;
 }
@@ -277,7 +308,7 @@ input::placeholder {
     border: 1px solid rgba(255, 255, 255, .06);
     border-radius: 14px;
     margin: 20px;
-    box-shadow: 0 8px 18px rgba(0,0,0,.35);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, .35);
 }
 
 .precos table {
