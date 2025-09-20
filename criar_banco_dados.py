@@ -11,9 +11,18 @@ CREATE TABLE IF NOT EXISTS veiculos(
                hora_entrada TEXT NOT NULL,
                hora_saida TEXT,
                valor REAL
-               )
-
+               );
 """)
-
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS historico (
+               id INTEGER PRIMARY KEY AUTOINCREMENT,
+               placa TEXT NOT NULL,
+               veiculos TEXT,
+               hora_entrada TEXT,
+               hora_saida TEXT,
+               permanencia TEXT,
+               valor REAL
+               );
+""")
 conexao.commit()
 conexao.close()

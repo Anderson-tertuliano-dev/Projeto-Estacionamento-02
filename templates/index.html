@@ -17,14 +17,14 @@
     <div class="spacer"></div>
     <section class="search">
       <form method="POST" action="/buscar">
-        <input type="text" name="placa_buscar" placeholder="Buscar placa…" />
+        <input type="text" name="placa_buscar" placeholder="Buscar placa…" required/>
         <button id="btnBuscar" type="submit" class="btn btn_buscar">Buscar</button>
       </form>
     </section>
   </header>
 
   <main class="container">
-    <section class="search_result" id="searchresult">
+    <section class="search_result" id="searchresult" style="display: {{ 'block' if monstrar_resultado else 'none' }};">
       <div class=" search_button">
         <h3>Resultado da busca🔎</h3>
         <button id="closeResult">&times;</button>
@@ -50,15 +50,18 @@
           </tr>
           {% else %}
           <tr>
-            <td colspan="4"> Nenhum veículo encontrado.</td>
+            <td colspan="5">Nenhum veiculo encontrado</td>
           </tr>
           {% endif %}
         </tbody>
       </table>
       <section>
-        <form action="">
+        {% if resultado %}
+        <form method="POST" action="{{ url_for('finalizar') }}">
+          <input type="hidden" name="placa_buscar" value="{{ resultado.placa}}">
           <button type="submit" class="bnt_finalizar">Finalizar</button>
         </form>
+        {% endif %}
       </section>
 
     </section>
@@ -94,7 +97,6 @@
           {% endwith %}
 
           <div class="action">
-            <button class="btn btn_ticket" type="button">Emitir ticket</button>
             <button class="btn btn_registro" type="submit">Registrar entrada</button>
           </div>
 
@@ -203,9 +205,7 @@
     closeBtn.addEventListener("click", () => {
       searchResult.style.display = 'none';
     });
-    // function mostrarResultado() {
-    //   searchResult.style.display = "block";
-    // }
+
   </script>
 </body>
 

@@ -10,7 +10,7 @@ def registrar_entrada():
  
 
     if request.method == "POST":
-        placa = request.form.get("placa", "").strip()
+        placa = request.form.get("placa", "").strip().upper()
         veiculos = request.form.get("veiculos", "")
         hora_entrada = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
@@ -49,8 +49,9 @@ def registrar_entrada():
 
 @app.route("/buscar", methods=["GET", "POST"])
 def buscar_placa():
-    placa = request.form.get("placa_buscar").strip().upper()
+    placa = request.form.get("placa_buscar", "").strip().upper()
     resultado = None
+    monstrar_resultado = False
 
     if placa:
         with sqlite3.connect("estacionamento.db") as conexao:
@@ -74,11 +75,24 @@ def buscar_placa():
                     "permanencia" : permanencia,
                     "valor": f"R$ {valor:.2f}"
                 }
+           
     
-    return render_template("index.html", resultado=resultado)
+        monstrar_resultado = True
+                
+    return render_template("index.html", resultado=resultado, monstrar_resultado=monstrar_resultado)
 
-
-
+@app.route("/finalizar", methods=["POST"])
+def finalizar():
+    placa = request.form.get("placa_buscar")
+    if placa:
+        with sqlite3.connect('estacionamento.db') as conexao:
+            cursor = conexao.cursor()
+            cursor.execute(
+                "DELETE FROM veiculos WHERE placa = ?", (placa,)
+            )
+            conexao.commit()
+            print(f"DELETE executado, linhas afetadas: {cursor.rowcount}")
+    return redirect(url_for("registrar_entrada"))
 
 if __name__ == "__main__":
     app.run(debug=True)
