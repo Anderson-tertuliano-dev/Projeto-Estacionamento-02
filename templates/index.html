@@ -17,14 +17,14 @@
     <div class="spacer"></div>
     <section class="search">
       <form method="POST" action="/buscar">
-        <input type="text" name="placa_buscar" placeholder="Buscar placa…" required/>
+        <input type="text" name="placa_buscar" placeholder="Buscar placa…" required />
         <button id="btnBuscar" type="submit" class="btn btn_buscar">Buscar</button>
       </form>
     </section>
   </header>
 
   <main class="container">
-    <section class="search_result" id="searchresult" style="display: {{ 'block' if monstrar_resultado else 'none' }};">
+    <section class="search_result" id="searchresult" style="display: {{ 'block' if mostrar_resultado else 'none' }};">
       <div class=" search_button">
         <h3>Resultado da busca🔎</h3>
         <button id="closeResult">&times;</button>
@@ -40,6 +40,7 @@
           </tr>
         </thead>
         <tbody>
+
           {% if resultado %}
           <tr>
             <td>{{ resultado.placa }}</td>
@@ -53,6 +54,7 @@
             <td colspan="5">Nenhum veiculo encontrado</td>
           </tr>
           {% endif %}
+
         </tbody>
       </table>
       <section>
@@ -107,19 +109,20 @@
 
         <div class="stat">
           <small>Vagas totais</small>
-          <strong>50</strong>
+          <strong>{{ vagas_totais }}</strong>
         </div>
         <div class="stat">
           <small>Ocupadas</small>
-          <strong>25</strong>
+          <strong>{{ vagas_ocupadas }}</strong>
         </div>
         <div class="stat">
           <small>Vagas Disponiveis</small>
-          <strong>25</strong>
+          <strong>{{ vagas_disponiveis }}</strong>
         </div>
         <div class="stat">
           <small>Faturamento</small>
-          <strong>1.240,00</strong>
+          <strong>{{ "R$ {:,.2f}".format(faturamento).replace(".", ",") }}</strong>
+
 
       </section>
 
@@ -163,23 +166,25 @@
       <table>
         <thead>
           <tr>
-            <th>Hora</th>
             <th>Placa</th>
             <th>Tipo</th>
+            <th>Hora</th>
             <th>Ação</th>
             <th>Vaga</th>
             <th>Valor</th>
           </tr>
         </thead>
         <tbody>
+          {% for placa, veiculos, entrada, saida, permanencia, valor in registro %}
           <tr>
-            <td>18:22</td>
-            <td>azs-4874</td>
-            <td>Carro</td>
-            <td>saída</td>
-            <td>21</td>
-            <td>15,20</td>
+            <td>{{ placa }}</td>
+            <td>{{ veiculos }}</td>
+            <td>{{ entrada }}</td>
+            <td>{{ saida }}</td>
+            <td>{{ permanencia }}</td>
+            <td>{{ "R$ {:,.2f}".format(valor).replace(".", ",") }}</td>
           </tr>
+          {% endfor %}
         </tbody>
       </table>
     </section>
