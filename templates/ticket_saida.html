@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Ticket de Saída</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        .ticket {
+            border: 2px dashed #000;
+            padding: 20px;
+            width: 300px;
+            margin: auto;
+        }
+        .ticket h1 {
+            margin: 10px 0;
+            font-size: 1.2em;
+        }
+        .ticket p {
+            margin: 5px 0;
+        }
+        .qr-code {
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body onload="window.print()">
+
+    <div class="ticket">
+        <div class="logo">🅿️ Estacionamento +</div>
+        <h1>Ticket de Saída</h1>
+        <p><strong>Placa:</strong> {{ placa }}</p>
+        <p><strong>Tipo:</strong> {{ tipo_veiculo }}</p>
+        <p><strong>Hora de Entrada:</strong> {{ hora_entrada }}</p>
+        <p><strong>Hora de Saída:</strong> {{ hora_saida }}</p>
+        <p><strong>permanencia:</strong> {{ permanencia}}</p>
+        <p><strong>Valor:</strong> {{ valor }}</p>
+
+
+        
+        
+        <p style="margin-top: 10px;">Obrigado e boa viagem!</p>
+    </div>
+
+    <script>
+        // Redireciona automaticamente após impressão ou cancelamento
+        window.onafterprint = function() {
+            window.location.href = "{{ url_for('registrar_entrada') }}";
+        };
+    </script>
+</body>
+</html>

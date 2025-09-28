@@ -216,7 +216,8 @@ button {
     color: var(--text);
 }
 
-.flash {
+
+.flash,.alert_warning {
     display: inline;
     font-family: 'Inter', sans-serif;
     font-size: 0.95rem;
@@ -315,9 +316,15 @@ input::placeholder {
 
 
 }
+.preco_ld {
+    text-align: right;
+}
 
-.precos th {
+.descricao_le {
     text-align: left;
+    
+}
+.descricao_le, .preco_ld{
     font-size: .85rem;
     color: var(--sub_text);
     font-weight: 600;

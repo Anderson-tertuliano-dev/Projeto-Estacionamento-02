@@ -2,6 +2,7 @@ import sqlite3
 from flask import Flask, render_template, request, redirect, url_for, flash, get_flashed_messages
 from datetime import datetime
 import re
+from utils import get_info_estacionamento, calcular_valor_e_permanencia, ticket_entrada, ticket_saida
 app = Flask(__name__)
 app.secret_key = "chave_secreta"
 
@@ -40,64 +41,37 @@ def registrar_entrada():
                             "INSERT INTO veiculos (placa, veiculos, hora_entrada) VALUES (?, ?, ?)",
                             (placa, veiculos, hora_entrada))
                         flash(f"Veículo {placa} registrado ", "success")
-                        return redirect(url_for("registrar_entrada"))
+                        return redirect(url_for("exibir_ticket", placa=placa))
 
             except sqlite3.IntegrityError:
                 flash("A placa {placa} já está registrada! (conflito)", "erro")
             except Exception as e:
                 flash("Erro ao registrar: {e}", "erro")
 
-    with sqlite3.connect("estacionamento.db") as conexao:
-            cursor = conexao.cursor()
-            cursor.execute("""
-            SELECT placa, veiculos, hora_entrada, hora_saida, permanencia, valor
-            FROM historico 
-            WHERE hora_saida IS NOT NULL
-            ORDER BY id DESC 
-            LIMIT 10
-            """)   
-            registro = cursor.fetchall()
-    
-    with sqlite3.connect("estacionamento.db") as conexao:
-        cursor = conexao.cursor()
-        vagas_totais = 50
-        cursor.execute("SELECT COUNT(*) FROM veiculos")
-        vagas_ocupadas = cursor.fetchone()[0]
-        vagas_disponiveis = vagas_totais - vagas_ocupadas
+    registro, vagas_totais, vagas_ocupadas, vagas_disponiveis, faturamento = get_info_estacionamento()
 
-        cursor.execute("SELECT SUM(valor) FROM historico")
-        faturamento = cursor.fetchone()[0] or 0
-        faturamento = float(faturamento)
-    
-
-    return render_template("index.html", registro=registro, resultado=None, mostrar_resultado=False,vagas_totais=vagas_totais,vagas_ocupadas=vagas_ocupadas,vagas_disponiveis=vagas_disponiveis,faturamento=faturamento)
-
-
+    return render_template("index.html", registro=registro, resultado=None, mostrar_resultado=False, vagas_totais=vagas_totais, vagas_ocupadas=vagas_ocupadas, vagas_disponiveis=vagas_disponiveis, faturamento=faturamento)
 
 
 @app.route("/buscar", methods=["GET", "POST"])
 def buscar_placa():
     placa = request.form.get("placa_buscar", "").strip().upper()
     resultado = None
-    mostrar_resultado = True
+    msg_busca = None
 
     if placa:
         with sqlite3.connect("estacionamento.db") as conexao:
             cursor = conexao.cursor()
             cursor.execute(
-                "SELECT placa, hora_entrada FROM veiculos WHERE placa = ?", (
+                "SELECT placa, veiculos, hora_entrada FROM veiculos WHERE placa = ?", (
                     placa,)
             )
+
             registro_busca = cursor.fetchone()
             if registro_busca:
-                hora_entrada = datetime.strptime(
-                    registro_busca[1], "%Y-%m-%d %H:%M:%S")
                 agora = datetime.now()
-                delta = agora - hora_entrada
-                horas = delta.seconds // 3600
-                minutos = (delta.seconds % 3600) // 60
-                permanencia = f"{horas}h {minutos}min"
-                valor = 12 + (horas * 8)
+                valor, permanencia, hora_entrada, hora_saida = calcular_valor_e_permanencia(
+                    registro_busca)
                 resultado = {
                     "placa": registro_busca[0],
                     "entrada": hora_entrada.strftime("%H:%M"),
@@ -105,29 +79,16 @@ def buscar_placa():
                     "permanencia": permanencia,
                     "valor": float(valor)
                 }
-                
+            else:
+                msg_busca =f"Nenhum veículo encontrado para a placa <span style='color:red'>{placa}</span>"
+    else:
+        msg_busca="Informe a placa do veículo!"
+        
 
-    with sqlite3.connect("estacionamento.db") as conexao:
-        cursor = conexao.cursor()
-        cursor.execute("""
-            SELECT placa, veiculos, hora_entrada, hora_saida, permanencia, valor
-            FROM historico 
-            WHERE hora_saida IS NOT NULL
-            ORDER BY id DESC 
-            LIMIT 10
-        """)
-        registro = cursor.fetchall()
+    registro, vagas_totais, vagas_ocupadas, vagas_disponiveis, faturamento = get_info_estacionamento()
 
-    with sqlite3.connect("estacionamento.db") as conexao:
-        cursor = conexao.cursor()
-        cursor.execute("SELECT SUM(valor) FROM historico")
-        faturamento = cursor.fetchone()[0] or 0
-        faturamento = float(faturamento)
+    return render_template("index.html", registro=registro, resultado=resultado, msg_busca=msg_busca, mostrar_resultado=True, vagas_totais=vagas_totais, vagas_ocupadas=vagas_ocupadas, vagas_disponiveis=vagas_disponiveis, faturamento=faturamento)
 
-    
-
-
-    return render_template("index.html", registro=registro, resultado=resultado, mostrar_resultado=mostrar_resultado, faturamento=faturamento)
 
 @app.route("/finalizar", methods=["POST"])
 def finalizar():
@@ -142,49 +103,12 @@ def finalizar():
             registro = cursor.fetchone()
 
             if registro:
-                hora_entrada = datetime.strptime(
-                    registro[2], "%Y-%m-%d %H:%M:%S")
-                hora_saida = datetime.now()
-                delta = hora_saida - hora_entrada
-                total_segundos = delta.total_seconds()
-                horas = int(total_segundos // 3600)
-                minutos = int((total_segundos % 3600) // 60)
-                if horas:
-                    permanencia = f"{horas} h {minutos} min"
-                else:
-                    permanencia = f"{minutos} min"
-                total_horas_inteiras = int(total_segundos // 3600)
-                if total_segundos % 3600 > 0:
-                    total_horas_inteiras += 1
-
-                tipo_veiculo = registro[1].lower()
-                valor = 0
-                if tipo_veiculo == "moto":
-                    valor = total_horas_inteiras * 5
-                else:
-                    if total_horas_inteiras <= 1:
-                        valor = 12
-                    elif total_horas_inteiras < 24:
-                        if hora_entrada.hour < 6 or hora_saida.hour > 18:
-                            valor = 30
-                        else:
-                            valor = 12 + (total_horas_inteiras - 1) * 8
-                    else:
-                        dias = total_horas_inteiras // 24
-                        horas_restantes = total_horas_inteiras % 24
-                        valor = dias * 55
-                        if horas_restantes <= 1:
-                            valor += 12
-                        elif horas_restantes > 1:
-                            valor += 12 + (horas_restantes - 1) * 8
-                        if horas_restantes >= 24:
-                            valor = (dias + 1) * 55
-            
+                valor, permanencia, hora_entrada, hora_saida = calcular_valor_e_permanencia(
+                    registro)
 
             cursor.execute(
                 "INSERT INTO historico (placa, veiculos, hora_entrada, hora_saida, permanencia, valor) VALUES (?, ?, ?, ?, ?, ?)",
                 (
-
                     registro[0],
                     registro[1],
                     registro[2],
@@ -196,11 +120,24 @@ def finalizar():
             cursor.execute(
                 "DELETE FROM veiculos WHERE placa = ?", (placa,)
             )
-            conexao.commit()
+            return redirect(url_for("exibir_ticket_saida", placa=placa))
+            
 
     return redirect(url_for("registrar_entrada"))
 
+@app.route("/ticket/<placa>")
+def exibir_ticket(placa):
+    placa, tipo_veiculo, hora_entrada, qr_code = ticket_entrada(placa)
+    if not placa:
+        return "Veículo não encontrado", 404
+    return render_template("ticket.html", placa=placa, tipo_veiculo=tipo_veiculo, hora_entrada=hora_entrada, qr_code=qr_code)
 
+@app.route("/ticket_saida/<placa>")
+def exibir_ticket_saida(placa):
+    placa, tipo_veiculo, hora_entrada, hora_saida, permanencia, valor = ticket_saida(placa)
+    if not placa:
+        return None
+    return render_template("ticket_saida.html", placa=placa, tipo_veiculo=tipo_veiculo, hora_entrada=hora_entrada, hora_saida=hora_saida, permanencia=permanencia, valor=valor)
 
 if __name__ == "__main__":
     app.run(debug=True)
