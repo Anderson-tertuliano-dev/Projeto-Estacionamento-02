@@ -37,7 +37,7 @@
         <p><strong>Hora de Entrada:</strong> {{ hora_entrada }}</p>
         <p><strong>Hora de Saída:</strong> {{ hora_saida }}</p>
         <p><strong>permanencia:</strong> {{ permanencia}}</p>
-        <p><strong>Valor:</strong> {{ valor }}</p>
+        <p><strong>Valor:</strong> {{ "R$ {:,.2f}".format(valor).replace(".", ",") }}</p>
 
 
         
@@ -48,7 +48,7 @@
     <script>
         // Redireciona automaticamente após impressão ou cancelamento
         window.onafterprint = function() {
-            window.location.href = "{{ url_for('registrar_entrada') }}";
+            window.location.href = "{{ url_for('buscar_placa') }}";
         };
     </script>
 </body>

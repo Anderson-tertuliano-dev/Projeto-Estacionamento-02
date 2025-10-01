@@ -17,7 +17,7 @@
     <div class="spacer"></div>
     <section class="search">
       <form method="POST" action="/buscar">
-        <input type="text" name="placa_buscar" placeholder="Buscar placa…"/>
+        <input type="text" name="placa_buscar" placeholder="Buscar placa…" />
         <button id="btnBuscar" type="submit" class="btn btn_buscar">Buscar</button>
       </form>
     </section>
@@ -39,7 +39,7 @@
             <th class="borda_f">Valor</th>
           </tr>
         </thead>
-        
+
         <tbody>
           {% if resultado %}
           <tr>
@@ -48,6 +48,10 @@
             <td>{{ resultado.agora }}</td>
             <td>{{ resultado.permanencia }}</td>
             <td>{{ "R$ {:,.2f}".format(resultado.valor).replace(".", ",") }}</td>
+          </tr>
+          {% elif msg_finalizar %}
+          <tr>
+            <td colspan="5" class="alert_success">{{ msg_finalizar }}</td>
           </tr>
           {% elif msg_busca %}
           <tr>
@@ -132,7 +136,7 @@
           <thead>
             <tr>
               <th class="descricao_le">Descrição</th>
-              <th class="preco_ld" >Preço</th>
+              <th class="preco_ld">Preço</th>
             </tr>
           </thead>
           <tbody>
